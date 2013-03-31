@@ -1,9 +1,8 @@
 require "test/unit"
-require "../../lib/creators/object_creator"
-require 'json'
+require "./object_creator"
 
 
-class ObjectFromHashCreatorTest < Test::Unit::TestCase
+class ObjectCreatorTest < Test::Unit::TestCase
 
   def create_object(hash)
     creator = ObjectCreator.new hash
