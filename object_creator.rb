@@ -6,7 +6,7 @@ class ObjectCreator
 
   def create
     obj = Object.new
-    ObjectCreator::create_object_from obj, hash
+    ObjectCreator::create_object_from_hash obj, hash
     obj
   end
 
@@ -14,14 +14,30 @@ class ObjectCreator
   attr_reader :hash
 
   class << self
-    def create_object_from(obj, hash)
+    def create_object_from_hash(obj, hash)
       hash.each do |variable_name, value|
-        if value.is_a? Hash
+        if value.is_a? Array
+          array = Array.new
+          create_object_form_array array, value
+          set_variable_and_attr_reader obj, variable_name, array
+        elsif value.is_a? Hash
           o = Object.new
-          create_object_from o, value
+          create_object_from_hash o, value
           set_variable_and_attr_reader o, variable_name, o
         else
           set_variable_and_attr_reader obj, variable_name, value
+        end
+      end
+    end
+
+    def create_object_form_array(obj, array)
+      array.each do |value|
+        if value.is_a? Hash
+          o = Object.new
+          create_object_from_hash o, value
+          obj.push o
+        else
+          obj.push value
         end
       end
     end
@@ -33,3 +49,4 @@ class ObjectCreator
   end
 
 end
+

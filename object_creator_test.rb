@@ -2,7 +2,7 @@ require "test/unit"
 require "./object_creator"
 
 
-class ObjectCreatorTest < Test::Unit::TestCase
+class ObjectFromHashCreatorTest < Test::Unit::TestCase
 
   def create_object(hash)
     creator = ObjectCreator.new hash
@@ -36,5 +36,12 @@ class ObjectCreatorTest < Test::Unit::TestCase
 
     assert obj.value1 == 'value1'
     assert obj.arr == [1, 2, 3]
+  end
+
+  def test_create_object_from_hash_with_array_of_hash
+    obj = create_object(:arr => [{value1: 'value1', value2: 'value2'}])
+
+    assert obj.arr[0].value1 == 'value1'
+    assert obj.arr[0].value2 == 'value2'
   end
 end
