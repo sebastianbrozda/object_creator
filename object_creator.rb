@@ -23,7 +23,7 @@ class ObjectCreator
         elsif value.is_a? Hash
           o = Object.new
           create_object_from_hash o, value
-          set_variable_and_attr_reader o, variable_name, o
+          set_variable_and_attr_reader obj, variable_name, o
         else
           set_variable_and_attr_reader obj, variable_name, value
         end
@@ -44,7 +44,9 @@ class ObjectCreator
 
     def set_variable_and_attr_reader obj, variable_name, value
       obj.instance_variable_set "@#{variable_name}", value
-      obj.class.send(:define_method, variable_name) { value }
+      obj.define_singleton_method(variable_name) do
+        value
+      end
     end
   end
 
